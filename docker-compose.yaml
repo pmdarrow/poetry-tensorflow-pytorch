@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  poetry-tensorflow-pytorch:
+    build: .
+    command: sleep infinity
+    volumes:
+      - ./:/app

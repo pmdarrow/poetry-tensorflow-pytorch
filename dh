@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+service_name="poetry-tensorflow-pytorch"
+
+if [[ -n "${USE_LOCAL}" ]]; then
+  prefix=""
+else
+    if [[ -n "${CI}" ]]; then
+        # Disabling allocating psuedo-tty in Github Action
+        export COMPOSE_INTERACTIVE_NO_CLI=1
+        prefix="docker-compose exec -T -u root ${service_name}"
+    else
+        prefix="docker-compose exec -u root ${service_name}"
+    fi
+fi
+
+set -x
+
+shell() {
+  # If the main service is already running, open a shell within it using `docker-compose exec`.
+  # Otherwise, use `docker-compose run` to spin up a new container instance.
+  if [[ -z "$(docker ps -q --no-trunc -f "status=running" | grep "$(docker-compose ps -q "${service_name}")")" ]]; then
+    command="run"
+  else
+    command="exec"
+  fi
+  docker-compose ${command} -u root ${service_name} /bin/bash
+}
+
+"$@"
