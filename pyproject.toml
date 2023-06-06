@@ -7,6 +7,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "~3.8"
+torch = [
+    {url = "https://download.pytorch.org/whl/cpu/torch-1.13.1%2Bcpu-cp38-cp38-linux_x86_64.whl", markers="platform_machine == 'x86_64'"},
+    {url = "https://download.pytorch.org/whl/torch-1.13.1-cp38-cp38-manylinux2014_aarch64.whl", markers="platform_machine == 'aarch64'"}
+]
 tensorflow = {version = "2.8.2", markers="platform_machine == 'x86_64'"}
 tensorflow-aarch64 = {version = "2.8.2", markers="platform_machine == 'aarch64'"}
 
